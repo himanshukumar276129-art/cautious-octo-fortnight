@@ -51,6 +51,11 @@ def on_startup():
         logger.info("Database initialized successfully.")
     except Exception as e:
         logger.error(f"Failed to initialize database tables: {e}")
+    
+    logger.info("Registered Routes:")
+    for route in app.routes:
+        if hasattr(route, "path"):
+            logger.info(f"{route.methods} {route.path}")
 
 def open_logger():
     import logging
@@ -89,9 +94,9 @@ app.include_router(media_router, prefix="/api/v1")
 app.include_router(admin_media_router, prefix="/api/v1")
 app.include_router(processor_router, prefix="/api/v1")
 
-@app.get("/health")
+@app.get("/health", tags=["System"])
 async def health():
-    return {"status": "ok", "service": "vedaapex-python-media"}
+    return {"status": "ok", "service": "vedaapex-python-media", "version": "1.0.0"}
 
 
 @app.get("/ready")
