@@ -54,8 +54,9 @@ def on_startup():
     
     logger.info("Registered Routes:")
     for route in app.routes:
-        if hasattr(route, "path"):
-            logger.info(f"{route.methods} {route.path}")
+        methods = getattr(route, "methods", {"GET"})
+        path = getattr(route, "path", str(route))
+        logger.info(f"{methods} {path}")
 
 def open_logger():
     import logging
